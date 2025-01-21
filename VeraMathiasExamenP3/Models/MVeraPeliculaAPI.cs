@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VeraMathiasExamenP3.Models
 {
-    public class PeliculaAPI
+    public class MVeraPeliculaAPI
     {
         public int id { get; set; }
         public string title { get; set; }
