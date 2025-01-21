@@ -42,7 +42,14 @@
                     <DataTemplate>
                         <ViewCell>
                             <StackLayout>
-                                <Label Text="{Binding title}"></Label>
+                                <Label x:Name ="mvLTitulo" Text="{Binding title}" VerticalTextAlignment="Center" Margin="10,0,0,0"/>
+                                <Image x:Name ="mvIPoster" Source="{Binding poster}" WidthRequest="50" HeightRequest="50" Aspect="AspectFill"/>
+                                <Label x:Name ="mvLAnio" Text="{Binding year}" VerticalTextAlignment="Start" Margin="10,0,0,0"/>
+                                <Label x:Name ="mvLGenero" Text="{Binding genre}" VerticalTextAlignment="Start" Margin="10,0,0,0"/>
+                                <Label x:Name ="mvLActores" Text="{Binding actors}" VerticalTextAlignment="Start" Margin="10,0,0,0"/>
+                                <Label x:Name ="mvLPremios" Text="{Binding awards}" VerticalTextAlignment="Start" Margin="10,0,0,0"/>
+                                <Label x:Name ="mvLWebsite" Text="{Binding website}" VerticalTextAlignment="Start" Margin="10,0,0,0"/>
+                                
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>
