@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using VeraMathiasExamenP3.Interfaces;
+using VeraMathiasExamenP3.Repositories;
 
 namespace VeraMathiasExamenP3
 {
@@ -14,6 +16,9 @@ namespace VeraMathiasExamenP3
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+
+            builder.Services.AddSingleton<IMVeraPeliculaAPI, MVeraPeliculaAPIRepository>();
+            builder.Services.AddTransient<MainPage> ();
 
 #if DEBUG
     		builder.Logging.AddDebug();

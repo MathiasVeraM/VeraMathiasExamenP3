@@ -25,11 +25,33 @@
                 SemanticProperties.Description="Welcome to dot net Multi platform App U I" />
 
             <Button
-                x:Name="CounterBtn"
-                Text="Click me" 
-                SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="OnCounterClicked"
-                HorizontalOptions="Fill" />
+                x:Name="Buscar"
+                Text="Obtener Peliculas" 
+                SemanticProperties.Hint="Muestra todo el listado de peliculas"
+                Clicked="Buscar_Clicked"
+                HorizontalOptions="Center" />
+
+            <ActivityIndicator x:Name="Cargando"
+                               HeightRequest="30"
+                               Color="Blue"
+                               IsRunning="True"
+                               IsVisible="False"/>
+
+            <ListView x:Name="listaPeliculas">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout>
+                                <Label Text="{Binding title}"></Label>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+                      
+
+
+
         </VerticalStackLayout>
     </ScrollView>
 
