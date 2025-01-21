@@ -13,16 +13,29 @@ namespace VeraMathiasExamenP3.Repositories
     public class MVeraPeliculaAPIRepository : IMVeraPeliculaAPI
     {
         private string _urlAPI = "https://freetestapi.com/api/v1/movies?";
+        private readonly HttpClient _httpClient = new HttpClient();
         public async Task<List<MVeraPeliculaAPI>> Obtener()
         {
-            var cliente = new HttpClient();
-            var respuesta = await cliente.GetAsync(_urlAPI);
-            var cuerpoRespuesta = await respuesta.Content.ReadAsStringAsync();
-            JsonNode nodes = JsonNode.Parse(cuerpoRespuesta);
-            JsonNode results = nodes["results"];
+            try
+            {
+                var respuesta = await _httpClient.GetAsync(_urlAPI);
+                if (!respuesta.IsSuccessStatusCode)
+                {
+                    throw new HttpRequestException($"Error en la solicitud: {respuesta.StatusCode}");
+                }
 
-            var peliculadata = JsonSerializer.Deserialize<List<MVeraPeliculaAPI>>(results.ToString());
-            return peliculadata;
+                var cuerpoRespuesta = await respuesta.Content.ReadAsStringAsync();
+
+                var nodo = JsonNode.Parse(cuerpoRespuesta);
+                var resultados = nodo["resultados"];
+
+                var peliculas = JsonSerializer.Deserialize<List<MVeraPeliculaAPI>>(resultados.ToString());
+
+                return peliculas ?? new List<MVeraPeliculaAPI>();
+            }
+            catch (Exception) {
+                throw;
+            }
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using VeraMathiasExamenP3.Interfaces;
-using VeraMathiasExamenP3.Repositories;
 
 namespace VeraMathiasExamenP3
 {
@@ -14,11 +13,11 @@ namespace VeraMathiasExamenP3
 
         private async void Buscar_Clicked(object sender, EventArgs e)
         {
-            loading.IsVisible = true;
+            Cargando.IsVisible = true;
             var data = await _mVeraPeliculaAPI.Obtener();
             listaPeliculas.ItemsSource = data;
 
-            loading.IsVisible = false;
+            Cargando.IsVisible = false;
         }
     }
 
