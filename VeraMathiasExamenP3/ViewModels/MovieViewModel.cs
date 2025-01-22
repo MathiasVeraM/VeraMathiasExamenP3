@@ -15,7 +15,7 @@ namespace VeraMathiasExamenP3.ViewModels
     public class MovieViewModel : BindableObject
     {
         private ObservableCollection<Movie> _movies;
-        private string _searchQuery;    
+        private string _searchQuery;
 
         public ObservableCollection<Movie> Movies
         {
@@ -56,36 +56,24 @@ namespace VeraMathiasExamenP3.ViewModels
             try
             {
                 using var client = new HttpClient();
-                var response = await client.GetStringAsync($"https://freetestapi.com/api/v1/movies?title={Uri.EscapeDataString(SearchQuery)}");
+                var response = await client.GetAsync($"https://freetestapi.com/api/v1/movies?title={Uri.EscapeDataString(SearchQuery)}");
 
-                if (string.IsNullOrWhiteSpace(response))
+                if (response.IsSuccessStatusCode)
                 {
-                    await Application.Current.MainPage.DisplayAlert("Error", "No se recibieron datos de la API.", "OK");
-                    return;
-                }
-
-                var movies = JsonSerializer.Deserialize<List<Movie>>(response);
-
-                if (movies == null || movies.Count == 0)
-                {
-                    Movies.Clear();
-                    await Application.Current.MainPage.DisplayAlert("Sin resultados", "No se encontraron películas con ese título exacto.", "OK");
-                }
-                else
-                {
-                    // Filtrar para mostrar solo la primera película que coincida con el título
-                    var filteredMovies = movies.Where(m => m.Title.Equals(SearchQuery, StringComparison.OrdinalIgnoreCase)).ToList();
-
-                    if (filteredMovies.Count > 0)
+                    var movies = await response.Content.ReadFromJsonAsync<List<Movie>>();
+                    if (movies != null && movies.Count > 0)
                     {
-                        Movies = new ObservableCollection<Movie>(filteredMovies);
-
+                        Movies = new ObservableCollection<Movie>(movies);
                     }
                     else
                     {
                         Movies.Clear();
-                        await Application.Current.MainPage.DisplayAlert("Sin resultados", "No se encontraron películas con ese título exacto.", "OK");
+                        await Application.Current.MainPage.DisplayAlert("Sin resultados", "No se encontraron películas con ese título.", "OK");
                     }
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", $"Error al buscar películas: {response.ReasonPhrase}", "OK");
                 }
             }
             catch (Exception ex)
