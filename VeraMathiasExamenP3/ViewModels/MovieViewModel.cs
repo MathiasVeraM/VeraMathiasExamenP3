@@ -13,20 +13,7 @@ namespace VeraMathiasExamenP3.ViewModels
 {
     public class MovieViewModel : BindableObject
     {
-        private string _searchQuery;
         private ObservableCollection<Movie> _movies;
-        private ObservableCollection<Movie> _filteredMovies;
-
-        public string SearchQuery
-        {
-            get => _searchQuery;
-            set
-            {
-                _searchQuery = value;
-                OnPropertyChanged();
-                FilterMovies();
-            }
-        }
 
         public ObservableCollection<Movie> Movies
         {
@@ -38,23 +25,13 @@ namespace VeraMathiasExamenP3.ViewModels
             }
         }
 
-        public ObservableCollection<Movie> FilteredMovies
-        {
-            get => _filteredMovies;
-            set
-            {
-                _filteredMovies = value;
-                OnPropertyChanged();
-            }
-        }
-
         public ICommand LoadMoviesCommand { get; }
 
         public MovieViewModel()
         {
             Movies = new ObservableCollection<Movie>();
-            FilteredMovies = new ObservableCollection<Movie>();
             LoadMoviesCommand = new Command(async () => await LoadMoviesAsync());
+            Task.Run(() => LoadMoviesAsync());
         }
 
         private async Task LoadMoviesAsync()
@@ -66,25 +43,11 @@ namespace VeraMathiasExamenP3.ViewModels
                 if (movies != null)
                 {
                     Movies = new ObservableCollection<Movie>(movies);
-                    FilterMovies();
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error: {ex.Message}");
-            }
-        }
-
-        private void FilterMovies()
-        {
-            if (string.IsNullOrWhiteSpace(SearchQuery))
-            {
-                FilteredMovies = new ObservableCollection<Movie>(Movies);
-            }
-            else
-            {
-                FilteredMovies = new ObservableCollection<Movie>(
-                Movies.Where(m => m.Title.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase)));
             }
         }
     }

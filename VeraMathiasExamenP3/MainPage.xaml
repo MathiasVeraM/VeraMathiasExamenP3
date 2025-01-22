@@ -20,6 +20,7 @@
             </ListView.ItemTemplate>
         </ListView>
         <Button Text="Cargar Películas"
+                x:Name="Buscar"
                 Command="{Binding LoadMoviesCommand}" />
     </StackLayout>
 
