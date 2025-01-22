@@ -8,38 +8,13 @@
         <VerticalStackLayout
             Padding="30,0"
             Spacing="25">
-            
+
             <Button
                 x:Name="Buscar"
                 Text="Obtener Peliculas" 
                 SemanticProperties.Hint="Muestra todo el listado de peliculas"
                 Clicked="Buscar_Clicked"
                 HorizontalOptions="Center" />
-
-            <ActivityIndicator x:Name="Cargando"
-                               HeightRequest="30"
-                               Color="Blue"
-                               IsRunning="True"
-                               IsVisible="False"/>
-
-            <ListView x:Name="listaPeliculas">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <StackLayout>
-                                <Label x:Name ="mvLTitulo" Text="{Binding title}" VerticalTextAlignment="Center" Margin="10,0,0,0"/>
-                                <Image x:Name ="mvIPoster" Source="{Binding poster}" WidthRequest="50" HeightRequest="50" Aspect="AspectFill"/>
-                                <Label x:Name ="mvLAnio" Text="{Binding year}" VerticalTextAlignment="Start" Margin="10,0,0,0"/>
-                                <Label x:Name ="mvLGenero" Text="{Binding genre}" VerticalTextAlignment="Start" Margin="10,0,0,0"/>
-                                <Label x:Name ="mvLActores" Text="{Binding actors}" VerticalTextAlignment="Start" Margin="10,0,0,0"/>
-                                <Label x:Name ="mvLPremios" Text="{Binding awards}" VerticalTextAlignment="Start" Margin="10,0,0,0"/>
-                                <Label x:Name ="mvLWebsite" Text="{Binding website}" VerticalTextAlignment="Start" Margin="10,0,0,0"/>
-                                
-                            </StackLayout>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
 
         </VerticalStackLayout>
     </ScrollView>
