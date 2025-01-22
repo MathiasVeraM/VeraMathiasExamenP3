@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using VeraMathiasExamenP3.Models;
@@ -55,24 +56,23 @@ namespace VeraMathiasExamenP3.ViewModels
             try
             {
                 using var client = new HttpClient();
-                var response = await client.GetAsync($"https://freetestapi.com/api/v1/movies?title={Uri.EscapeDataString(SearchQuery)}");
+                var response = await client.GetStringAsync($"https://freetestapi.com/api/v1/movies?title={Uri.EscapeDataString(SearchQuery)}");
 
-                if (response.IsSuccessStatusCode)
+                var movies = JsonSerializer.Deserialize<List<Movie>>(response);
+
+                if (movies != null && movies.Count > 0)
                 {
-                    var movies = await response.Content.ReadFromJsonAsync<List<Movie>>();
-                    if (movies != null && movies.Count > 0)
+                    var filteredMovies = movies.Where(m => m.Title.Equals(SearchQuery, StringComparison.OrdinalIgnoreCase)).ToList();
+
+                    if (filteredMovies.Count > 0)
                     {
-                        Movies = new ObservableCollection<Movie>(movies);
+                        Movies = new ObservableCollection<Movie>(filteredMovies);
                     }
                     else
                     {
                         Movies.Clear();
-                        await Application.Current.MainPage.DisplayAlert("Sin resultados", "No se encontraron películas con ese título.", "OK");
+                        await Application.Current.MainPage.DisplayAlert("Sin resultados", "No se encontraron películas con ese título exacto.", "OK");
                     }
-                }
-                else
-                {
-                    await Application.Current.MainPage.DisplayAlert("Error", $"Error al buscar películas: {response.ReasonPhrase}", "OK");
                 }
             }
             catch (Exception ex)
