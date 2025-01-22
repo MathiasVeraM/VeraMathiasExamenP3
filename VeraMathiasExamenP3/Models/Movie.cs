@@ -12,5 +12,8 @@ namespace VeraMathiasExamenP3.Models
         public string Title { get; set; }
         public string[] Genre { get; set; }
         public int Year { get; set; }
+        public string[] Actors { get; set; }
+        public string Awards { get; set; }
+        public string Website { get; set; }
     }
 }

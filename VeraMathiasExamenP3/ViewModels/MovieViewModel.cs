@@ -9,6 +9,8 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using VeraMathiasExamenP3.Models;
+using SQLite;
+using VeraMathiasExamenP3.Repositories;
 
 namespace VeraMathiasExamenP3.ViewModels
 {
@@ -63,6 +65,21 @@ namespace VeraMathiasExamenP3.ViewModels
                     var movies = await response.Content.ReadFromJsonAsync<List<Movie>>();
                     if (movies != null && movies.Count > 0)
                     {
+                        foreach (var movie in movies)
+                        {
+                            var movieDb = new MovieDb
+                            {
+                                Title = movie.Title,
+                                Genre = movie.Genre.Length > 0 ? movie.Genre[0] : "Desconocido",
+                                MainActor = movie.Actors.Length > 0 ? movie.Actors[0] : "Desconocido",
+                                Awards = movie.Awards ?? "N/A", 
+                                Website = movie.Website ?? "N/A", 
+                                MVera = "MVera"
+                            };
+
+                            await App.Database.SaveMovieAsync(movieDb);
+                        }
+
                         Movies = new ObservableCollection<Movie>(movies);
                     }
                     else
