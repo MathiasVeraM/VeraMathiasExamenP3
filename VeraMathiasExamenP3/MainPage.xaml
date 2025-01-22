@@ -8,25 +8,28 @@
         <local:MovieViewModel />
     </ContentPage.BindingContext>
 
-    <StackLayout Padding="10">
+    <StackLayout Padding="10" x:Name="StackLayoutVM">
         <Label Text="Buscar Película"
                FontSize="24"
-               HorizontalOptions="Center" />
+               HorizontalOptions="Center"
+               x:Name="Label1VM"/>
 
         <Entry Placeholder="Ingrese el título de la película"
-               Text="{Binding SearchQuery}" />
+               Text="{Binding SearchQuery}" 
+               x:Name="EntryVM"/>
 
         <Button Text="Buscar"
-                Command="{Binding SearchCommand}" />
+                Command="{Binding SearchCommand}" 
+                x:Name="BotonVM"/>
 
-        <ListView ItemsSource="{Binding Movies}">
+        <ListView ItemsSource="{Binding Movies}" x:Name="PeliculaEncontradaVM">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
                         <StackLayout Orientation="Vertical" Padding="10">
-                            <Label Text="{Binding Title}" FontSize="20" FontAttributes="Bold" />
-                            <Label Text="{Binding Genre}" FontSize="16" />
-                            <Label Text="{Binding Year}" FontSize="14" TextColor="Gray" />
+                            <Label Text="{Binding Title}" FontSize="20" FontAttributes="Bold" x:Name="TituloVM"/>
+                            <Label Text="{Binding Genre}" FontSize="16" x:Name="GeneroVM"/>
+                            <Label Text="{Binding Year}" FontSize="14" TextColor="Gray" x:Name="AnioVM"/>
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>
