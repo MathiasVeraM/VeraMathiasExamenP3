@@ -79,6 +79,7 @@ namespace VeraMathiasExamenP3.ViewModels
                     if (filteredMovies.Count > 0)
                     {
                         Movies = new ObservableCollection<Movie>(filteredMovies);
+
                     }
                     else
                     {
