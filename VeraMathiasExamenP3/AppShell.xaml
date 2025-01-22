@@ -7,9 +7,17 @@
     Shell.FlyoutBehavior="Disabled"
     Title="VeraMathiasExamenP3">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <TabBar>
+        <Tab Title="BuscarPeliculas">
+            <ShellContent   Title="BuscarPeliculas" 
+                            ContentTemplate="{DataTemplate local:MainPage}"
+                            Route="MainPage" />
+        </Tab>
+        <Tab Title="PeliculasBuscadas">
+            <ShellContent   Title="PeliculasBuscadas"
+                            ContentTemplate="{DataTemplate local:PeliculasBuscadas}"
+                            Route="PeliculasBuscadas" />
+        </Tab>
+    </TabBar>
 
 </Shell>
