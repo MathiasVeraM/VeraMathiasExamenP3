@@ -14,6 +14,7 @@ namespace VeraMathiasExamenP3.ViewModels
     public class MovieViewModel : BindableObject
     {
         private ObservableCollection<Movie> _movies;
+        private string _searchQuery;    
 
         public ObservableCollection<Movie> Movies
         {
@@ -25,29 +26,59 @@ namespace VeraMathiasExamenP3.ViewModels
             }
         }
 
-        public ICommand LoadMoviesCommand { get; }
+        public string SearchQuery
+        {
+            get => _searchQuery;
+            set
+            {
+                _searchQuery = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Command SearchCommand { get; }
 
         public MovieViewModel()
         {
             Movies = new ObservableCollection<Movie>();
-            LoadMoviesCommand = new Command(async () => await LoadMoviesAsync());
-            Task.Run(() => LoadMoviesAsync());
+            SearchCommand = new Command(async () => await SearchMoviesAsync());
         }
 
-        private async Task LoadMoviesAsync()
+        private async Task SearchMoviesAsync()
         {
+            if (string.IsNullOrWhiteSpace(SearchQuery))
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Por favor, ingrese un título para buscar.", "OK");
+                return;
+            }
+
             try
             {
                 using var client = new HttpClient();
-                var movies = await client.GetFromJsonAsync<List<Movie>>("https://freetestapi.com/api/v1/movies?");
-                if (movies != null)
+                var response = await client.GetAsync($"https://freetestapi.com/api/v1/movies?title={Uri.EscapeDataString(SearchQuery)}");
+
+                if (response.IsSuccessStatusCode)
                 {
-                    Movies = new ObservableCollection<Movie>(movies);
+                    var movies = await response.Content.ReadFromJsonAsync<List<Movie>>();
+                    if (movies != null && movies.Count > 0)
+                    {
+                        Movies = new ObservableCollection<Movie>(movies);
+                    }
+                    else
+                    {
+                        Movies.Clear();
+                        await Application.Current.MainPage.DisplayAlert("Sin resultados", "No se encontraron películas con ese título.", "OK");
+                    }
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", $"Error al buscar películas: {response.ReasonPhrase}", "OK");
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error: {ex.Message}");
+                await Application.Current.MainPage.DisplayAlert("Error", $"Ocurrió un error: {ex.Message}", "OK");
             }
         }
     }
