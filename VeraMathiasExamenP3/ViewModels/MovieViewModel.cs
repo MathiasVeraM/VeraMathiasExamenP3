@@ -56,11 +56,22 @@ namespace VeraMathiasExamenP3.ViewModels
             try
             {
                 using var client = new HttpClient();
-                var response = await client.GetStringAsync($"https://freetestapi.com/api/v1/movies?title={Uri.EscapeDataString(SearchQuery)}");
+                var response = await client.GetStringAsync($"https://freetestapi.com/api/v1/movies?search={Uri.EscapeDataString(SearchQuery)}");
+
+                if (string.IsNullOrWhiteSpace(response))
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "No se recibieron datos de la API.", "OK");
+                    return;
+                }
 
                 var movies = JsonSerializer.Deserialize<List<Movie>>(response);
 
-                if (movies != null && movies.Count > 0)
+                if (movies == null || movies.Count == 0)
+                {
+                    Movies.Clear();
+                    await Application.Current.MainPage.DisplayAlert("Sin resultados", "No se encontraron películas con ese título exacto.", "OK");
+                }
+                else
                 {
                     var filteredMovies = movies.Where(m => m.Title.Equals(SearchQuery, StringComparison.OrdinalIgnoreCase)).ToList();
 
