@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:VeraMathiasExamenP3.ViewModels"
+             x:Class="VeraMathiasExamenP3.MainPage">
+
+    <ContentPage.BindingContext>
+        <local:MovieViewModel />
+    </ContentPage.BindingContext>
+
+    <StackLayout Padding="10">
+        <SearchBar Placeholder="Buscar películas"
+                   Text="{Binding SearchQuery}" />
+        <ListView ItemsSource="{Binding FilteredMovies}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding Title}"
+                              Detail="{Binding Genre}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Button Text="Cargar Películas"
+                Command="{Binding LoadMoviesCommand}" />
+    </StackLayout>
+
+</ContentPage>

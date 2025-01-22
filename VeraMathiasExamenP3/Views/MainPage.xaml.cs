@@ -1,5 +1,4 @@
-﻿
-namespace VeraMathiasExamenP3
+﻿namespace VeraMathiasExamenP3.Views
 {
     public partial class MainPage : ContentPage
     {
