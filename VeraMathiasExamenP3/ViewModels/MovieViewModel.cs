@@ -56,7 +56,7 @@ namespace VeraMathiasExamenP3.ViewModels
             try
             {
                 using var client = new HttpClient();
-                var response = await client.GetStringAsync($"https://freetestapi.com/api/v1/movies?search={Uri.EscapeDataString(SearchQuery)}");
+                var response = await client.GetStringAsync($"https://freetestapi.com/api/v1/movies?title={Uri.EscapeDataString(SearchQuery)}");
 
                 if (string.IsNullOrWhiteSpace(response))
                 {
@@ -73,6 +73,7 @@ namespace VeraMathiasExamenP3.ViewModels
                 }
                 else
                 {
+                    // Filtrar para mostrar solo la primera película que coincida con el título
                     var filteredMovies = movies.Where(m => m.Title.Equals(SearchQuery, StringComparison.OrdinalIgnoreCase)).ToList();
 
                     if (filteredMovies.Count > 0)
