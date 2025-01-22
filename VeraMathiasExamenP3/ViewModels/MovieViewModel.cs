@@ -56,7 +56,7 @@ namespace VeraMathiasExamenP3.ViewModels
             try
             {
                 using var client = new HttpClient();
-                var response = await client.GetAsync($"https://freetestapi.com/api/v1/movies?title={Uri.EscapeDataString(SearchQuery)}");
+                var response = await client.GetAsync($"https://freetestapi.com/api/v1/movies?search={Uri.EscapeDataString(SearchQuery)}");
 
                 if (response.IsSuccessStatusCode)
                 {
